@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="212" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="23">
+ <tileset firstgid="1" name="tileSet-hd" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="tileSet.png" trans="fe80fe" width="256" height="256"/>
+ </tileset>
+ <tileset firstgid="257" source="tileset.tsx"/>
+ <layer id="1" name="background" width="212" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt19dSFEEUgOE1ZwUjZiUYUFFUxIgRRAEVVEAMVeZsFQIqGKpUMHNhzheoL4D6gP5zoYVbw+zM9sx07/b5q747dvb0ztI9m0hIkiRJkiRJkhRGz/AcL9Br0XtL/pJ7FKxP+Iwv+GrRe0v+knskDawP3/AdPzTPkm7ZsAYTkrNWvX78xC/81jxLumXDGkxIzlrJlmw+g21Zu6nPB0MwFMMwHCMwEqMwGmP0jfavoJ9dWGewqffMK1ueP0x9PsjFZEzBVEzDdMxAHmYGuFZUe6Ouz87UeyalX9Tn90LkowCFKMIiLMYSLA1wLVv2Rq9sed7K1KL+jpZiNdZgLcqwDuVYjw0RvGc2J3uK3W3HDuzELlSiCrtRjT2DvG48JmBiDDNmc5nyG03OXX/VowEHcQiH0YgmNOOIy2tmYw7mYh7mxzJpOI3FuMT/+8EkjfNkym80OXf9dRKncBpncBbncB4XcDHp74uxDMuxAiVYiVUxzavarIT7frDAx2tbcBTHcBwnohnRtcH2gZwA19A5v5PqGrzmj2ttqdbQiutoQzs6cAM3cQudSdfbiE3YjC2owFZs8znPwDXrSGU/uITLuIKruBbRjG6p7AN/0zm/k+oavOaPa22p1nAfD/AQ3ejBIzzGEzxNut5e1KAWddiH/TjgYxbd99NJZT/owm3cwV3ci2ZE18J4LtA5v5PqGrzmj2ttqdbwEq/wGm/wFu/wHh/wMel6Kv9Puu+nU6bOr/pc4KT781ddgwnnk5PqfZD0p7IPmJLqGkw4n5zCvA9/APhXt0M=
+  </data>
+ </layer>
+ <layer id="4" name="enemies" width="212" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt2TsKACEMBUA9917e0sYFf0GUmTovhLQvJQAAAAAAAAB435dPXwAAAAAAAHC3Vt8y08GMZHpmo3uglf1/2ei/7chF2vkXAKAqZ8AGTQ==
+  </data>
+ </layer>
+ <layer id="2" name="walls" width="212" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt10sKwjAUheFmDU7clZtQ5+pUF6CrNlCCsdzmYW97E/k/CC0oMU3OATsMAAAAAAAAAAAAAAAAwLy9yw/p+1ZrlD6T7v/VwY0DwDKhS/QJWCbuEn0Cvt19Jx6FvZh2qac+hf/g02sLas4gZc1n05qzZp7cO12cv5osTrP7S47jtcVrfPr7V8F8Upd66pMmrfwHpWeAD6kTJXmUsquZ5ZKznOuSZp+Oxnmq6Yh2/ulTnVQnUpmcy65mnnNnmeqSVp/Ofp6TG69WajJNn+yUdELKZSq7mplOnWWuS1p9uvh5rn7covl2bpux9e9ZrzVm/TzWe9LiPvR+Pj2tnT7p7kmL+7DW+bwBhdZO3Q==
+  </data>
+ </layer>
+ <layer id="3" name="hazards" width="212" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt0bENACAIBEAcxv1XtDDWFmgi5i6hJf8QAQAAAAAAAAAAAAAAAAAAAP/qbU4FJ7KuHVU672S6vHiHW/8ZaK8CFQ==
+  </data>
+ </layer>
+ <objectgroup id="6" name="questionBlocks">
+  <object id="1" x="256" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="8" x="336" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="star"/>
+   </properties>
+  </object>
+  <object id="9" x="368" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="10" x="352" y="160" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="flower"/>
+   </properties>
+  </object>
+  <object id="11" x="1024" y="208" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="12" x="1248" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="star"/>
+   </properties>
+  </object>
+  <object id="13" x="1504" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="14" x="1504" y="160" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="star"/>
+   </properties>
+  </object>
+  <object id="15" x="1744" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="16" x="1696" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="17" x="1744" y="160" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="star"/>
+   </properties>
+  </object>
+  <object id="18" x="1616" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="19" x="1792" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="20" x="2720" y="224" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="21" x="2080" y="160" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+  <object id="22" x="2064" y="160" width="16" height="16">
+   <properties>
+    <property name="Name" value="item"/>
+    <property name="Value" value="coin"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
