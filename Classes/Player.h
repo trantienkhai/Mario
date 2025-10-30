@@ -33,6 +33,8 @@ class Player : public Sprite
     cocos2d::Action* _currentAction;
     PlayerForm _form = PlayerForm::Normal;
     bool _canShoot = false;
+    int _coinCount = 0;
+    int _starCount = 0;
 
     void playIdleAnimation();
     void playRunAnimation();
@@ -56,6 +58,10 @@ public:
     void setForm(PlayerForm form);
     PlayerForm getForm() const { return _form; }
     bool canShoot() const { return _canShoot; }
+    void addCoin() { _coinCount++; }
+    int getCoinCount() const { return _coinCount; }
+    void addStar() { _starCount++; }
+    int getStarCount() const { return _starCount; }
     //void shootFireball();
 
 

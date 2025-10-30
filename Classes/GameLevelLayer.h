@@ -6,6 +6,7 @@
 #include "SimpleAudioEngine.h"
 #include "Enemy.h"
 #include "QuestionBlock.h"
+#include "Boss.h"
 
 USING_NS_CC;
 
@@ -28,6 +29,9 @@ class GameLevelLayer : public Layer
     bool _isGameOver;
     std::vector<Enemy*> _enemies;
     std::vector<QuestionBlock*> _questionBlocks;
+    Boss *_boss;
+    Label *_coinLabel;
+    Label *_starLabel;
     
     // Schedule update handler
     void update(float dt);
@@ -41,6 +45,7 @@ class GameLevelLayer : public Layer
     void checkPlayerEnemyCollisions();
     void checkPlayerItemCollisions();
     void checkFireballEnemyCollisions();
+    void checkPlayerBossCollision();
     
     // Camera on screen
     void setViewpointCenter(Vec2 position);
@@ -50,9 +55,11 @@ class GameLevelLayer : public Layer
     
     // Menu Callback
     void replayButtonCallback(Ref* pSender);
+    void menuButtonCallback(Ref* pSender);
     
     // Helper
     void checkForWin();
+    void updateCoinLabel();
 public:
     static cocos2d::Scene* createScene();
     virtual bool init();

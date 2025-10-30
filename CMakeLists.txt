@@ -54,6 +54,9 @@ list(APPEND GAME_SOURCE
      Classes/Enemy.cpp
      Classes/Fireball.cpp
      Classes/QuestionBlock.cpp
+     Classes/Boss.cpp
+     Classes/MenuLayer.cpp
+     Classes/PauseLayer.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -62,6 +65,9 @@ list(APPEND GAME_HEADER
      Classes/Enemy.h
      Classes/Fireball.h
      Classes/QuestionBlock.h
+     Classes/Boss.h
+     Classes/MenuLayer.h
+     Classes/PauseLayer.h
      )
 
 if(ANDROID)

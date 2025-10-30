@@ -1,6 +1,9 @@
 ﻿#include "GameLevelLayer.h"
 #include "SimpleAudioEngine.h"   
 #include "Fireball.h"
+#include "MenuLayer.h"
+#include "PauseLayer.h"
+#include "cocos2d.h"
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -100,6 +103,34 @@ bool GameLevelLayer::init()
 		}
 	}
 
+	// --- Spawn Boss at the end of the map ---
+	_boss = Boss::createBoss();
+	if (_boss)
+	{
+		_boss->setPosition(Vec2(3180, 50)); // Đặt boss ở vị trí cao hơn và sang phải
+		_boss->setPatrolRange(50.0f); // Boss di chuyển trong phạm vi 80 pixels mỗi bên
+		_map->addChild(_boss, 15); // Z-order cao hơn để đảm bảo boss hiện trên cùng
+		CCLOG("Boss spawned at position (3100, 60)");
+	}
+	else
+	{
+		CCLOG("ERROR: Failed to create Boss!");
+	}
+
+	// --- Coin and Star Counter UI ---
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	_coinLabel = Label::createWithSystemFont("Coins: 0 / 10", "Arial", 20);
+	_coinLabel->setTextColor(Color4B::YELLOW);
+	_coinLabel->setPosition(Vec2(60, visibleSize.height - 20));
+	_coinLabel->enableOutline(Color4B::BLACK, 2);
+	this->addChild(_coinLabel, 100);
+	
+	_starLabel = Label::createWithSystemFont("Stars: 0", "Arial", 20);
+	_starLabel->setTextColor(Color4B::MAGENTA);
+	_starLabel->setPosition(Vec2(60, visibleSize.height - 50));
+	_starLabel->enableOutline(Color4B::BLACK, 2);
+	this->addChild(_starLabel, 100);
+
 	//Keyboard
 	initKeyboardListener();
 
@@ -147,6 +178,8 @@ void GameLevelLayer::update(float delta) {
 	this->checkPlayerItemCollisions();
 	this->checkPlayerEnemyCollisions();
 	this->checkFireballEnemyCollisions();
+	this->checkPlayerBossCollision();
+	this->updateCoinLabel();
 	this->setViewpointCenter(_player->getPosition());	
 }
 
@@ -190,6 +223,11 @@ void GameLevelLayer::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 			_map->addChild(fireball, 10);
 			fireball->setPosition(spawnPos);
 		}
+		break;
+
+	case EventKeyboard::KeyCode::KEY_ESCAPE:
+		// Pause game
+		Director::getInstance()->pushScene(PauseLayer::createScene());
 		break;
 	}
 }
@@ -348,6 +386,9 @@ void GameLevelLayer::checkPlayerItemCollisions()
 
 		else if (name == "star")
 		{
+			// Tăng số sao
+			_player->addStar();
+			
 			if (!_player->isInvincible())
 			{
 				_player->setInvincible(true);
@@ -570,7 +611,14 @@ void GameLevelLayer::checkForAndResolveCollisions(Player* player)
 			));
 
 			if (block->getState() == BlockState::Idle)
+			{
 				block->setState(BlockState::Hit);
+				// Tăng coin cho player nếu block chứa coin
+				if (block->getItemType() == "coin")
+				{
+					player->addCoin();
+				}
+			}
 		}
 		else if (player->getVelocity().y <= 0 && playerBottom >= blockTop - 4)
 		{
@@ -681,6 +729,12 @@ void GameLevelLayer::gameOver(bool playerDidWin)
 	if (playerDidWin)
 	{
 		gameText = "You Won!";
+		
+		// Thêm 2 vàng và 2 sao bonus khi thắng
+		_player->addCoin();
+		_player->addCoin();
+		_player->addStar();
+		_player->addStar();
 	}
 	else
 	{
@@ -695,15 +749,49 @@ void GameLevelLayer::gameOver(bool playerDidWin)
 	MenuItemFont* diedLabel = MenuItemFont::create(gameText);
 	diedLabel->setFontName("Marker Felt");
 	diedLabel->setFontSize(24);
-	diedLabel->setPosition(Vec2(0, 50));
+	diedLabel->setPosition(Vec2(0, 80));
 	pMenu->addChild(diedLabel);
+
+	// Hiển thị số vàng và sao khi thắng
+	if (playerDidWin)
+	{
+		int coins = _player->getCoinCount();
+		int stars = _player->getStarCount();
+		
+		// Hiển thị số vàng
+		MenuItemFont* coinLabel = MenuItemFont::create(StringUtils::format("Coins: %d", coins));
+		coinLabel->setFontName("Arial");
+		coinLabel->setFontSize(20);
+		coinLabel->setColor(Color3B::YELLOW);
+		coinLabel->setPosition(Vec2(0, 40));
+		pMenu->addChild(coinLabel);
+		
+		// Hiển thị số sao
+		MenuItemFont* starLabel = MenuItemFont::create(StringUtils::format("Stars: %d", stars));
+		starLabel->setFontName("Arial");
+		starLabel->setFontSize(20);
+		starLabel->setColor(Color3B::MAGENTA);
+		starLabel->setPosition(Vec2(0, 10));
+		pMenu->addChild(starLabel);
+	}
 
 	MoveBy* slideIn = MoveBy::create(1.0, Vec2(0, 200));
 
-	MenuItemImage* replay = MenuItemImage::create("replay.png", "replay.png", "replay.png");
-	replay->setPosition(Point::ZERO);
-	replay->setCallback(CC_CALLBACK_1(GameLevelLayer::replayButtonCallback, this));
-	pMenu->addChild(replay);
+	MenuItemFont* replayItem = MenuItemFont::create("REPLAY");
+	replayItem->setFontName("Arial");
+	replayItem->setFontSize(24);
+	replayItem->setColor(Color3B::GREEN);
+	replayItem->setPosition(Vec2(-60, -30));
+	replayItem->setCallback(CC_CALLBACK_1(GameLevelLayer::replayButtonCallback, this));
+	pMenu->addChild(replayItem);
+
+	MenuItemFont* menuItem = MenuItemFont::create("MENU");
+	menuItem->setFontName("Arial");
+	menuItem->setFontSize(24);
+	menuItem->setColor(Color3B::BLUE);
+	menuItem->setPosition(Vec2(60, -30));
+	menuItem->setCallback(CC_CALLBACK_1(GameLevelLayer::menuButtonCallback, this));
+	pMenu->addChild(menuItem);
 
 	this->addChild(pMenu, 1);
 
@@ -715,10 +803,74 @@ void GameLevelLayer::replayButtonCallback(Ref* pSender)
 	Director::getInstance()->replaceScene(GameLevelLayer::createScene());
 }
 
+void GameLevelLayer::menuButtonCallback(Ref* pSender)
+{
+	Director::getInstance()->replaceScene(MenuLayer::createScene());
+}
+
 void GameLevelLayer::checkForWin()
 {
-	if (_player->getPosition().x > 3130.0)
+	// Chỉ thắng khi đã đánh bại boss và đến cuối map
+	if (_boss && _boss->getState() == BossState::Dead && _player->getPosition().x > 3130.0)
 	{
 		gameOver(true);
+	}
+}
+
+void GameLevelLayer::checkPlayerBossCollision()
+{
+	// Nếu boss đã chết hoặc không tồn tại, bỏ qua
+	if (!_boss || _boss->getState() == BossState::Dead)
+		return;
+
+	auto playerRect = _player->getCollisionBoundingBox();
+	auto bossRect = _boss->getBoundingBox();
+
+	if (playerRect.intersectsRect(bossRect))
+	{
+		float playerBottom = playerRect.getMinY();
+		float bossTop = bossRect.getMaxY();
+
+		// Kiểm tra xem Mario có đang nhảy lên đầu boss không
+		if (_player->getVelocity().y < 0 && playerBottom > bossTop - 10)
+		{
+			// Mario nhảy lên đầu boss
+			if (_player->getCoinCount() >= 10)
+			{
+				// Đủ 10 coin - Đánh bại boss!
+				_boss->setState(BossState::Dead);
+				SimpleAudioEngine::getInstance()->playEffect("music/kick.mp3");
+				
+				// Tạo hiệu ứng nhảy lên
+				_player->setVelocity(Vec2(_player->getVelocity().x, 180));
+				
+				// Boss đã chết, bây giờ phải đi đến nhà để thắng
+			}
+			else
+			{
+				// Chưa đủ 10 coin - Thua!
+				gameOver(false);
+			}
+		}
+		else
+		{
+			// Va chạm từ bên cạnh hoặc dưới - Thua!
+			gameOver(false);
+		}
+	}
+}
+
+void GameLevelLayer::updateCoinLabel()
+{
+	if (_coinLabel)
+	{
+		int coins = _player->getCoinCount();
+		_coinLabel->setString(StringUtils::format("Coins: %d / 10", coins));
+	}
+	
+	if (_starLabel)
+	{
+		int stars = _player->getStarCount();
+		_starLabel->setString(StringUtils::format("Stars: %d", stars));
 	}
 }

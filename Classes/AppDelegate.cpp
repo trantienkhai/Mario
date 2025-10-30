@@ -24,7 +24,7 @@
 
 #include "AppDelegate.h"
 //#include "HelloWorldScene.h"
-#include "GameLevelLayer.h"
+#include "MenuLayer.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -84,9 +84,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("SuperKoalio", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("BK Mario", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
-        glview = GLViewImpl::create("SuperKoalio");
+        glview = GLViewImpl::create("BK Mario");
 #endif
         director->setOpenGLView(glview);
     }
@@ -120,7 +120,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
 //    auto scene = HelloWorld::createScene();
-    auto scene = GameLevelLayer::createScene();
+    auto scene = MenuLayer::createScene();
     
     // run
     director->runWithScene(scene);
